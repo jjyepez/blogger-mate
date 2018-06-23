@@ -1,5 +1,5 @@
 body {
-  font-family: monospace;
+  font-family: 'Zilla Slab', monospace;
   font-size: 120%;
   position: absolute;
   height: 100%;
@@ -7,11 +7,47 @@ body {
   display: flex;
   flex-direction: column;
 }
+.encabezado {
+  flex-direction: row;
+  display: flex;
+  z-index: 50;
+  height: 50px;
+  background-color: #fff;
+  align-items: center;
+  justify-content: center;
+}
+.encabezado .avatar {
+  width:2rem;
+  height: 2rem;
+  border-radius: 100%;
+  background-color: #eee;
+}
+.encabezado .center {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  height: 100%;
+  flex: 1;
+}
+.encabezado .left {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  width: 56px;
+  height: 100%;
+}
+.encabezado .right {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  width: 50px;
+  height: 100%;
+}
 .tabs {
   position: relative;
   display: flex;
   flex-direction: row;
-  height: 56px;
+  height: 50px;
   width: 100vw;
   left: 0;
   top: 0;
@@ -41,7 +77,8 @@ body {
   height: 100%;
   overflow: hidden;
   overflow-y: auto;
-  margin: 1rem 0;
+  margin: 0;
+  padding: 1rem 0 2rem 0;
 }
 .contenido .panel {
   display: none;
@@ -93,13 +130,16 @@ body {
   position: relative;
   border-radius: .5rem;
   background-color: #eee;
-  padding: .25rem;
+  padding: .3rem;
   display: flex;
   flex-direction: column;
   flex: 1;
 }
 .contenido .seccion .parte.colapsed .acciones2 {
   display: none;
+}
+.contenido .seccion .parte.colapsed svg {
+  transform: rotateZ(180deg);
 }
 .contenido .seccion .parte.colapsed .texto {
   display: none;
@@ -194,7 +234,7 @@ body {
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.2);
 }
 .modal .dialogo .cabecera {
-  height: 40px;
+  height: 48px;
   width: 100%;
   justify-content: center;
   display: flex;
@@ -239,13 +279,29 @@ body {
   }
 }
 
-
 .panel-preview {
-  width: 100vw;
+  width: 100%;
   max-width: 900px;
   overflow: hidden;
   overflow-y: auto;
+  min-height: 90%;
+  position: relative;
+  display: flex;
+  margin: 2rem auto;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
 }
 .panel-preview img {
   max-width: 100%;
+}
+.panel-preview .articulo.vacio {
+  height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.panel-preview .articulo.vacio img {
+  max-width: 10rem;
+  width: 50%;
+  height:auto;
+  opacity: .25;
 }

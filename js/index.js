@@ -150,42 +150,53 @@ function clickTab( n ){
 }
 
 function actualizarPreview(){
-	const $elementos = d.querySelectorAll('.panel-plantilla .texto')
+
+	const $elementos = d.querySelectorAll('.panel-plantilla .parte')
 	const $panelPreview = d.querySelector('.panel-preview')
 				$panelPreview.innerHTML = ''
 	const $articulo = d.createElement('article')
 				$articulo.classList.add('articulo')
 	
-	$elementos.forEach( (el, i) => {
-		const htmlTag = el.getAttribute('data-html')
-		const htmlAttr = el.getAttribute('data-template')
-		var regexReplace = el.getAttribute('data-regex-replace')
+	$elementos.forEach( (parte, i) => {
 
-		const $elemento = d.createElement( htmlTag )
+		if( !parte.classList.contains('oculto') ){
 
-		if( htmlAttr ){
-			$elemento.setAttribute(htmlAttr, el.value)
-		} else {
-			$elemento.innerHTML = el.value
-		}
-		if( regexReplace ){
-			const x = decodeURI(regexReplace)
-			const arrRegex = JSON.parse( x )
-			if(!Array.isArray( arrRegex ) ){
-				regexReplace = [arrRegex]
+			const el  = parte.querySelector('.texto')
+
+			const htmlTag = el.getAttribute('data-html')
+			const htmlAttr = el.getAttribute('data-template')
+			var regexReplace = el.getAttribute('data-regex-replace')
+
+			const $elemento = d.createElement( htmlTag )
+
+			if( htmlAttr ){
+				$elemento.setAttribute(htmlAttr, el.value)
+			} else {
+				$elemento.innerHTML = el.value
 			}
-			var texto = el.value
-			arrRegex.forEach( rgx => {
-				const exp = new RegExp( rgx[0], 'gm' )
-				const nuevoVal = texto.replace( exp, rgx[1] )
-				texto = nuevoVal
-			})
-			$elemento.innerHTML = texto
-		} else {
-			$elemento.innerHTML = el.value
+			if( regexReplace ){
+				const x = decodeURI(regexReplace)
+				const arrRegex = JSON.parse( x )
+				if(!Array.isArray( arrRegex ) ){
+					regexReplace = [arrRegex]
+				}
+				var texto = el.value
+				arrRegex.forEach( rgx => {
+					const exp = new RegExp( rgx[0], 'gm' )
+					const nuevoVal = texto.replace( exp, rgx[1] )
+					texto = nuevoVal
+				})
+				$elemento.innerHTML = texto
+			} else {
+				$elemento.innerHTML = el.value
+			}
+			
+			$articulo.appendChild( $elemento )
+			if( $articulo.textContent == "" ){
+				$articulo.classList.add('vacio')
+				$articulo.innerHTML = `<img src='./res/img/empty-post.svg'>`
+			}
 		}
-		
-		$articulo.appendChild( $elemento )
 	})
 	$panelPreview.appendChild( $articulo )
 }
@@ -262,6 +273,7 @@ console.log( seccion, parte, adicional )
 	const $nuevoElemento = crearElementoParte( parte, seccion, adicional, true)
 				$nuevoElemento.classList.add('activo')
 				$nuevoElemento.appendAfter( $parte )
+	feather.replace()
 	const t = setTimeout(( $nE => {
 		$nE.classList.remove('activo')
 	}).bind(this, $nuevoElemento), 2000)
@@ -277,7 +289,7 @@ function crearElementoParte( parte, seccion, adicional, esAdicional = false ){
 	const $expand = document.createElement('div')
 				$expand.setAttribute('data-parte', seccion+'-'+nuevaI)
 				$expand.classList.add('colapsable')
-				$expand.innerHTML = `▼` 
+				$expand.innerHTML = `<i data-feather='chevron-up' data-parte='${seccion}-${nuevaI}'></i>` 
 
 				$expand.addEventListener('click', ev => {
 					const dataParte = ev.target.getAttribute('data-parte')
@@ -333,13 +345,16 @@ function crearElementoParte( parte, seccion, adicional, esAdicional = false ){
 	$texto.classList.add('texto')
 
 	$parte.appendChild($texto)
+	if( parte.nombre.toLowerCase() === 'separador'){
+		$texto.style.display = 'none'
+	}
 	
 	const $acciones = d.createElement('div')
 				$acciones.classList.add('acciones')
 	const $ac1 = d.createElement('div')
 				$ac1.setAttribute('data-parte', seccion+'-'+nuevaI)
 				$ac1.classList.add('clickable')
-				$ac1.innerHTML = `👁`      
+				$ac1.innerHTML = `<i data-feather='eye' data-parte='${seccion}-${nuevaI}'></i>`      
 				
 				
 				$ac1.addEventListener('click', ev => {
@@ -360,7 +375,8 @@ function crearElementoParte( parte, seccion, adicional, esAdicional = false ){
 							data-parte = '${nuevaI}'
 							title = 'Agregar bloque'
 							onclick ='agregarParte(this)'>
-						+ </div>
+							<i data-feather='plus' data-parte='${nuevaI}' data-seccion='${seccion}'></i>
+						</div>
 					</div>
 				`
 	$acciones2.classList.add('acciones2')
@@ -372,7 +388,7 @@ function crearElementoParte( parte, seccion, adicional, esAdicional = false ){
 		$ac2.title = 'Eliminar este bloque'
 		$ac2.setAttribute('data-parte', seccion+'-'+nuevaI)
 		$ac2.classList.add('clickable')
-		$ac2.innerHTML = `❌`      
+		$ac2.innerHTML = `<i data-feather='trash-2' data-parte='${seccion}-${nuevaI}'></i>`      
 		
 		$ac2.addEventListener('click', ev => {
 			clickHandler( ev, ()=>{
@@ -392,6 +408,7 @@ function crearElementoParte( parte, seccion, adicional, esAdicional = false ){
 		$seccion.appendChild($parte)
 		const $panelPlantilla = d.querySelector('.panel-plantilla')
 		$panelPlantilla.append( $seccion )
+		feather.replace()
 	}
 }
 
@@ -409,6 +426,8 @@ function inicializar(){
 	crearModalAdicionales()
 	cargarEstructura()
 	clickTab(0)
+
+	feather.replace()
 }
 
 
