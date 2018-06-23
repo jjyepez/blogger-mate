@@ -1,0 +1,239 @@
+body {
+  font-family: monospace;
+  font-size: 120%;
+  position: absolute;
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+.tabs {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  height:  56px;
+  width: 100vw;
+  left:0;
+  top:0;
+  box-shadow: 0 0 30px rgba(0,0,0,.2); 
+  
+  .tab {
+    box-sizing: border-box;
+    height: 100%;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    color: #777;
+    border-bottom: 2px solid transparent;
+    cursor: pointer !important;
+    
+    * { cursor: pointer !important; }
+    
+    &.activo {
+      color: #39e;
+      border-bottom: 2px solid #39e;
+    }
+  }
+}
+.contenido {
+  flex: 1;
+  height: 100%;
+  overflow: hidden;
+  overflow-y: auto;
+  margin: 1rem 0;
+
+  .panel {
+    display: none;
+    overflow: auto;
+    overflow-x: hidden;
+    
+    &.activo {
+      flex-direction: column;
+      display: flex;
+    }
+    
+    .articulo {
+      font-family: times;
+      margin: 1rem 1.5rem 4rem 1.5rem;
+      opacity: .9;
+    }
+  }
+  .seccion {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: auto;
+    padding: .25rem;
+    margin: 0 .5rem;
+    
+    .oculto {
+      opacity: .35;
+      .etq {
+        pointer-events: none;
+      }
+      .texto, .acciones2 {
+        display: none !important;
+      }
+    }    
+    .etq {
+      display: flex;
+    }
+    &>.etq {
+      margin: .5rem 0;
+    }
+    .parte {
+      position: relative;
+      border-radius: .5rem;
+      background-color: #eee;
+      padding: .25rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      
+      &.colapsed {
+        .acciones2 {
+          display: none;
+        }
+        .texto {
+          display: none;
+        }
+      }
+      .etq {
+        align-items: center;
+      }
+      &:not(:first-of-type){
+        margin-top: .25rem;
+      }
+       
+      .texto {
+        display: flex;
+        flex: 1;
+        resize: vertical;
+        border: none;
+        outline: none;
+        padding: .5rem;
+        font-size: 100%;
+        min-height: 5rem;
+      } 
+      .acciones {
+        text-align: right;
+        position: absolute;
+        right: 0;
+        display: flex;
+        align-items: center;
+        height: 2.1rem;
+        padding: 0 .5rem;
+      }
+      .acciones2 {
+        display: flex;
+        width: 100%;
+      }
+      .oculto {
+        display: none;
+      }
+    }
+  }
+}
+.bottomToolbar {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  height:  56px;
+  width: 100vw;
+  left:0;
+  top:0;
+  background-color: #fff;
+  box-shadow: 0 0 30px rgba(0,0,0,.2);
+}
+.clickable,
+.colapsable {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  opacity: .75;
+  border-radius: 100%;
+  width: 2rem;
+  height: 2rem;
+  
+  &:hover {
+    opacity: 1;
+  }
+  &.clicked {
+    animation: clicked .7s ease forwards;
+    transition: all .7s ease;
+  }
+}
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height:100vh;
+  background-color: rgba(0,0,0,.25);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  &.oculto {
+    display: none;
+  }
+  
+  .dialogo {
+    background-color: #fff;
+    border-radius: .5rem;
+    min-width: 50vw;
+    min-height: 2vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 50px rgba(0,0,0,.2); 
+    
+    .cabecera {
+      height: 40px;
+      width: 100%;
+      justify-content: center;
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      border-bottom: 1px solid #eee;
+    }
+    .contenidoDialogo {
+      flex: 1;
+      width: 100%;
+      max-height: 50vh;
+      overflow: hidden;
+      overflow-y: auto;
+      margin: 0;
+      
+      .opcion {
+        position: relative;
+        padding: .75rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        &:hover, &:active {
+          background-color: rgba(0,0,0,.1)
+        }        
+        & .tappable {
+          flex: 1 0 auto;
+          width: 100% !important;
+          justify-content: left;
+          cursor: pointer;
+        }
+      }
+    }
+    .pie {
+      height: 40px;
+    }
+  }
+}
+@keyframes clicked {
+  from {background-color: rgba(0,0,0,.15)}
+  to {background-color: transparent}
+}
